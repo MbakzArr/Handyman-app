@@ -24,13 +24,19 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            //'email_verified_at' => now(),
+            'password' => bcrypt('password'),
+            //'remember_token' => \Str::random(10),
+
+            // Coordinates around Pretoria area
+            'lat' => $this->faker->latitude(-25.78, -25.70),
+            'lng' => $this->faker->longitude(28.20, 28.30),
         ];
     }
+
+
 
     /**
      * Indicate that the model's email address should be unverified.

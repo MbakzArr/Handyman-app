@@ -14,21 +14,17 @@ class HandymanController extends Controller
         $lat = $request->query('lat');
         $lng = $request->query('lng');
 
-        // Default values if not provided
-        if (!$lat || !$lng) {
-            return response()->json(['error' => 'Latitude and Longitude are required'], 400);
-        }
-
-        // Fetch handymen within 10km using Haversine formula
         $handymen = DB::table('handymen')
-            ->select('*')
-            ->selectRaw("(
-                6371 * acos(
-                    cos(radians(?)) * cos(radians(lat)) * cos(radians(lng) - radians(?)) +
-                    sin(radians(?)) * sin(radians(lat))
-                )
-            ) AS distance", [$lat, $lng, $lat])
-            ->havingRaw("distance < 10") // 10km radius
+            ->join('users', 'handymen.user_id', '=', 'users.id')
+            ->join('services', 'handymen.service_id', '=', 'services.id')
+            ->select('handymen.*', 'users.name', 'users.email', 'users.lat', 'users.lng', 'services.name as service_name')
+            ->selectRaw("
+            (6371 * acos(
+                cos(radians(?)) * cos(radians(users.lat)) * cos(radians(users.lng) - radians(?)) +
+                sin(radians(?)) * sin(radians(users.lat))
+            )) AS distance", [$lat, $lng, $lat])
+            ->havingRaw("distance < 10")
+            ->orderBy('distance')
             ->get();
 
         return response()->json($handymen);

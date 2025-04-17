@@ -1,13 +1,21 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>nearby-handymen</ion-title>
+    <ion-title>Nearby Handymen</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">nearby-handymen</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-list *ngIf="handymen.length > 0; else noHandymen">
+    <ion-item *ngFor="let handyman of handymen" button [routerLink]="['/handyman', handyman.id]">
+      <ion-label>
+        <h2>{{ handyman.name }}</h2>
+        <p>{{ handyman.service_name }}</p>
+        <p>{{ handyman.distance | number: '1.0-2' }} km</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noHandymen>
+    <ion-text color="medium">No handymen nearby.</ion-text>
+  </ng-template>
 </ion-content>
