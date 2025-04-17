@@ -7,17 +7,25 @@
 <ion-content *ngIf="handyman">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>{{ handyman.name }}</ion-card-title>
+      <ion-card-title>{{ handyman.user.name }}</ion-card-title>
     </ion-card-header>
-    
+  
     <ion-card-content>
-      <p><strong>Skills:</strong> {{ handyman.skills.join(', ') }}</p>
-      <p><strong>Rating:</strong> {{ handyman.rating }}</p>
-      <p><strong>Phone:</strong> {{ handyman.phone }}</p>
-      <p><strong>Email:</strong> {{ handyman.email }}</p>
-      <p><strong>Available:</strong> {{ handyman.available ? 'Yes' : 'No' }}</p>
+      <p><strong>Skill:</strong> {{ handyman.service.name }}</p>
+      <p><strong>Phone:</strong> {{ handyman.user.phone || 'N/A' }}</p>
+      <p><strong>Email:</strong> {{ handyman.user.email }}</p>
+      <p><strong>Bio:</strong> {{ handyman.bio || 'No bio available' }}</p>
+      <p><strong>Available:</strong> Yes</p>
+  
+      <ion-item>
+        <ion-label>Choose Date & Time</ion-label>
+        <input type="datetime-local" [(ngModel)]="selectedDateTime" />
+      </ion-item>
+  
+      <ion-button expand="full" color="primary" (click)="bookHandyman()">Book Now</ion-button>
     </ion-card-content>
   </ion-card>
+  
 </ion-content>
 
 <ion-content *ngIf="!handyman">

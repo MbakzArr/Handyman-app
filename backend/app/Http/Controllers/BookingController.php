@@ -10,15 +10,19 @@ class BookingController extends Controller
     // Create a booking
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+        $request->validate([
             'handyman_id' => 'required|exists:handymen,id',
-            'datetime' => 'required|date',
+            'user_id' => 'required|exists:users,id',
+            'datetime' => 'required|date'
         ]);
 
-        $booking = Booking::create($validated);
+        $booking = Booking::create([
+            'handyman_id' => $request->handyman_id,
+            'user_id' => $request->user_id,
+            'datetime' => $request->datetime,
+        ]);
 
-        return response()->json(['message' => 'Booking successfully created!', 'booking' => $booking], 201);
+        return response()->json($booking, 201);
     }
 
     // Admin view all bookings

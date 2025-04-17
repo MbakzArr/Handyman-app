@@ -5,8 +5,10 @@ import {
   IonItem,
   IonLabel
 } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms'; // add this to the imports
+import { ToastController } from '@ionic/angular';
 
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/angular/standalone';
 import { ApiService } from '../../services/api.service';
 imports: [
   CommonModule,
@@ -19,7 +21,8 @@ imports: [
   IonCardTitle,
   IonCardContent,
   IonItem,
-  IonLabel
+  IonLabel,
+  IonButton
 ]
 
 @Component({
@@ -27,28 +30,47 @@ imports: [
   templateUrl: './handyman-detail.page.html',
   styleUrls: ['./handyman-detail.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, CommonModule]
+  imports: [IonButton, FormsModule, IonItem, IonLabel, IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, CommonModule]
 })
 export class HandymanDetailPage implements OnInit {
   handymanId!: string;
   handyman: any;
+  selectedDateTime: string = '';
 
-  constructor(private route: ActivatedRoute, private api: ApiService) {}
+  constructor(private route: ActivatedRoute, private api: ApiService, private toastController: ToastController) {}
 
   ngOnInit() {
     this.handymanId = this.route.snapshot.paramMap.get('id')!;
-    console.log("Fetching handyman details for ID:", this.handymanId);
-  
     this.api.getHandymanById(this.handymanId).subscribe({
-      next: (data) => {
-        console.log("Handyman data:", data);  // Log the response data to ensure it's being fetched correctly
-        this.handyman = data;
-      },
-      error: (err) => {
-        console.error('Failed to load handyman details:', err);
-      }
+      next: (data) => this.handyman = data,
+      error: (err) => console.error('Failed to load handyman details:', err)
     });
   }
-  
-  
+
+  async bookHandyman() {
+    if (!this.selectedDateTime) {
+      this.presentToast('Please select a date and time to book.');
+      return;
+    }
+
+    const payload = {
+      handyman_id: this.handyman.id,
+      datetime: this.selectedDateTime,
+      user_id: 1 // Replace with the real logged-in user ID
+    };
+
+    this.api.bookHandyman(payload).subscribe({
+      next: () => this.presentToast('Booking successful!'),
+      error: () => this.presentToast('Booking failed. Please try again.')
+    });
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    await toast.present();
+  }
 }

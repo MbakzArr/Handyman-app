@@ -11,7 +11,7 @@ Route::get('handymen/nearby', [HandymanController::class, 'getNearbyHandymen']);
 Route::get('handyman/{id}', [HandymanController::class, 'show']);
 
 // Create a booking
-Route::post('bookings', [BookingController::class, 'store']);
+Route::post('/bookings', [BookingController::class, 'store']);
 
 // Admin view bookings
 Route::get('admin/bookings', [BookingController::class, 'index']);
