@@ -31,14 +31,14 @@ class HandymanController extends Controller
     }
 
     // Get handyman profile by ID
-    public function show($id)
-    {
-        $handyman = Handyman::with('user', 'service')->find($id);
+    public function show($id) {
+        $handyman = Handyman::with(['user', 'service'])->find($id);
 
-        if (!$handyman) {
-            return response()->json(['error' => 'Handyman not found'], 404);
+        if ($handyman) {
+            return response()->json($handyman);
+        } else {
+            return response()->json(['message' => 'Handyman not found'], 404);
         }
-
-        return response()->json($handyman);
     }
+
 }

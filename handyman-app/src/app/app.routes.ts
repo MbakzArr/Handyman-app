@@ -11,7 +11,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/nearby-handymen/nearby-handymen.page').then( m => m.NearbyHandymenPage)
   },
   {
-    path: 'handyman-detail',
+    path: 'handyman/:id',
     loadComponent: () => import('./pages/handyman-detail/handyman-detail.page').then( m => m.HandymanDetailPage)
   },
   {

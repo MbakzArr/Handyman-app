@@ -44,7 +44,6 @@ export class NearbyHandymenPage implements OnInit {
 
     this.api.getNearbyHandymen(lat, lng).subscribe({
       next: (data) => {
-        console.log('Handymen response:', data);
         this.handymen = data;
       },
       error: (err) => {

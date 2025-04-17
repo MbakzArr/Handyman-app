@@ -14,11 +14,17 @@ export class ApiService {
     return this.http.get<any[]>(`${this.apiUrl}/handymen/nearby?lat=${lat}&lng=${lng}`);
   }
 
-  getHandyman(id: number): Observable<any> {
+  getHandymanById(id: string) {
     return this.http.get<any>(`${this.apiUrl}/handyman/${id}`);
   }
+  
 
   bookHandyman(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/bookings`, data);
   }
+  
+  getHandymanDetails(id: number) {
+    return this.http.get(`http://localhost:8000/api/handyman/${id}`);
+  }
+  
 }

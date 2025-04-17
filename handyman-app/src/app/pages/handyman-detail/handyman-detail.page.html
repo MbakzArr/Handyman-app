@@ -1,13 +1,25 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>handyman-detail</ion-title>
+    <ion-title>Handyman Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">handyman-detail</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content *ngIf="handyman">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ handyman.name }}</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <p><strong>Skills:</strong> {{ handyman.skills.join(', ') }}</p>
+      <p><strong>Rating:</strong> {{ handyman.rating }}</p>
+      <p><strong>Phone:</strong> {{ handyman.phone }}</p>
+      <p><strong>Email:</strong> {{ handyman.email }}</p>
+      <p><strong>Available:</strong> {{ handyman.available ? 'Yes' : 'No' }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-content *ngIf="!handyman">
+  <p>Loading handyman details...</p>
 </ion-content>

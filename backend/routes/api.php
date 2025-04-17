@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('handymen/nearby', [HandymanController::class, 'getNearbyHandymen']);
 
 // Get handyman profile by ID
-Route::get('/handyman/{id}', [HandymanController::class, 'show']);
+Route::get('handyman/{id}', [HandymanController::class, 'show']);
 
 // Create a booking
 Route::post('bookings', [BookingController::class, 'store']);
