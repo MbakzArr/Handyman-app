@@ -1,13 +1,33 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>booking-form</ion-title>
+    <ion-title>Book Handyman</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">booking-form</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Select Appointment</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Select Date</ion-label>
+        <ion-datetime
+          presentation="date"
+          [(ngModel)]="selectedDate">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Select Time</ion-label>
+        <ion-datetime
+          presentation="time"
+          [(ngModel)]="selectedTime"
+          hour-cycle="h12">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-button expand="block" (click)="submitBooking()">Book Now</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

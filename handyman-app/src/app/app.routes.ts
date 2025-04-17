@@ -3,11 +3,11 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'nearby-handymen',
+    redirectTo: 'handymen/nearby',
     pathMatch: 'full',
   },
   {
-    path: 'nearby-handymen',
+    path: 'handymen/nearby',
     loadComponent: () => import('./pages/nearby-handymen/nearby-handymen.page').then( m => m.NearbyHandymenPage)
   },
   {
@@ -15,11 +15,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/handyman-detail/handyman-detail.page').then( m => m.HandymanDetailPage)
   },
   {
-    path: 'booking-form',
-    loadComponent: () => import('./pages/booking-form/booking-form.page').then( m => m.BookingFormPage)
-  },
+    path: 'booking-form/:id',
+    loadComponent: () => import('./pages/booking-form/booking-form.page').then(m => m.BookingFormPage)
+  },  
   {
-    path: 'admin',
+    path: 'admin/bookings',
     loadComponent: () => import('./admin-dashboard/admin-dashboard.page').then( m => m.AdminDashboardPage)
   },
 ];

@@ -1,48 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {
-  IonItem,
-  IonLabel
-} from '@ionic/angular/standalone';
-import { FormsModule } from '@angular/forms'; // add this to the imports
-import { ToastController } from '@ionic/angular';
+import * as L from 'leaflet';
+import { FormsModule } from '@angular/forms';
+import { ToastController, IonicModule } from '@ionic/angular';
 
-import { IonButton, IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/angular/standalone';
 import { ApiService } from '../../services/api.service';
-imports: [
-  CommonModule,
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonItem,
-  IonLabel,
-  IonButton
-]
 
 @Component({
   selector: 'app-handyman-detail',
+  standalone: true,
   templateUrl: './handyman-detail.page.html',
   styleUrls: ['./handyman-detail.page.scss'],
-  standalone: true,
-  imports: [IonButton, FormsModule, IonItem, IonLabel, IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, CommonModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule // ✅ Needed for [routerLink]
+  ]
 })
 export class HandymanDetailPage implements OnInit {
   handymanId!: string;
   handyman: any;
   selectedDateTime: string = '';
 
-  constructor(private route: ActivatedRoute, private api: ApiService, private toastController: ToastController) {}
+  constructor(
+    private route: ActivatedRoute,
+    private api: ApiService,
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {
     this.handymanId = this.route.snapshot.paramMap.get('id')!;
     this.api.getHandymanById(this.handymanId).subscribe({
-      next: (data) => this.handyman = data,
+      next: (data) => {
+        this.handyman = data;
+        this.loadMap();
+      },
       error: (err) => console.error('Failed to load handyman details:', err)
     });
   }
@@ -56,7 +50,7 @@ export class HandymanDetailPage implements OnInit {
     const payload = {
       handyman_id: this.handyman.id,
       datetime: this.selectedDateTime,
-      user_id: 1 // Replace with the real logged-in user ID
+      user_id: 1 // Replace with actual user ID
     };
 
     this.api.bookHandyman(payload).subscribe({
@@ -72,5 +66,27 @@ export class HandymanDetailPage implements OnInit {
       position: 'bottom'
     });
     await toast.present();
+  }
+
+  loadMap() {
+    const lat = this.handyman.user.lat;
+    const lng = this.handyman.user.lng;
+
+    setTimeout(() => {
+      const map = L.map('map').setView([lat, lng], 13);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup(this.handyman.user.name)
+        .openPopup();
+
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 200);
+    }, 100);
   }
 }

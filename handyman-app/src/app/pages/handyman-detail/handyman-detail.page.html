@@ -1,33 +1,28 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Handyman Details</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <ng-container *ngIf="handyman; else loading">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ handyman.user.name }}</ion-card-title>
+      </ion-card-header>
 
-<ion-content *ngIf="handyman">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{ handyman.user.name }}</ion-card-title>
-    </ion-card-header>
-  
-    <ion-card-content>
-      <p><strong>Skill:</strong> {{ handyman.service.name }}</p>
-      <p><strong>Phone:</strong> {{ handyman.user.phone || 'N/A' }}</p>
-      <p><strong>Email:</strong> {{ handyman.user.email }}</p>
-      <p><strong>Bio:</strong> {{ handyman.bio || 'No bio available' }}</p>
-      <p><strong>Available:</strong> Yes</p>
-  
-      <ion-item>
-        <ion-label>Choose Date & Time</ion-label>
-        <input type="datetime-local" [(ngModel)]="selectedDateTime" />
-      </ion-item>
-  
-      <ion-button expand="full" color="primary" (click)="bookHandyman()">Book Now</ion-button>
-    </ion-card-content>
-  </ion-card>
-  
-</ion-content>
+      <ion-card-content>
+        <p><strong>Skill:</strong> {{ handyman.service.name }}</p>
+        <p><strong>Phone:</strong> {{ handyman.user.phone || 'N/A' }}</p>
+        <p><strong>Email:</strong> {{ handyman.user.email }}</p>
+        <p><strong>Bio:</strong> {{ handyman.bio || 'No bio available' }}</p>
+        <p><strong>Available:</strong> Yes</p>
 
-<ion-content *ngIf="!handyman">
-  <p>Loading handyman details...</p>
+        <!-- Map here -->
+        <div id="map"></div>
+
+        
+
+        <ion-button [routerLink]="['/booking-form', handyman.id]">Book Now</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <ng-template #loading>
+    <p>Loading handyman details...</p>
+  </ng-template>
 </ion-content>

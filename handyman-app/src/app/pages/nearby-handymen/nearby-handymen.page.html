@@ -1,16 +1,15 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="dark">
     <ion-title>Nearby Handymen</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding" color="light">
   <ion-list *ngIf="handymen.length > 0; else noHandymen">
     <ion-item *ngFor="let handyman of handymen" button [routerLink]="['/handyman', handyman.id]">
       <ion-label>
         <h2>{{ handyman.name }}</h2>
-        <p>{{ handyman.service_name }}</p>
-        <p>{{ handyman.distance | number: '1.0-2' }} km</p>
+        <p>{{ handyman.service_name }} • {{ handyman.distance | number:'1.1-2' }} km away</p>
       </ion-label>
     </ion-item>
   </ion-list>
