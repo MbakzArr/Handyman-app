@@ -14,4 +14,5 @@ Route::get('handyman/{id}', [HandymanController::class, 'show']);
 Route::post('/bookings', [BookingController::class, 'store']);
 
 // Admin view bookings
-Route::get('admin/bookings', [BookingController::class, 'index']);
+Route::get('/admin/bookings', [BookingController::class, 'index']);
+

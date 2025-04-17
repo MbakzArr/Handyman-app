@@ -18,4 +18,8 @@ export const routes: Routes = [
     path: 'booking-form',
     loadComponent: () => import('./pages/booking-form/booking-form.page').then( m => m.BookingFormPage)
   },
+  {
+    path: 'admin',
+    loadComponent: () => import('./admin-dashboard/admin-dashboard.page').then( m => m.AdminDashboardPage)
+  },
 ];

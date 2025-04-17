@@ -28,7 +28,9 @@ class BookingController extends Controller
     // Admin view all bookings
     public function index()
     {
-        $bookings = Booking::with('user', 'handyman')->get();
+        $bookings = Booking::with(['user', 'handyman.user', 'handyman.service'])->get();
+
         return response()->json($bookings);
     }
+
 }

@@ -31,5 +31,10 @@ export class ApiService {
   getHandymanDetails(id: number) {
     return this.http.get(`http://localhost:8000/api/handyman/${id}`);
   }
+
+  getAllBookings() {
+    return this.http.get(`${this.apiUrl}/admin/bookings`);
+  }
+  
   
 }
